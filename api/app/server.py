@@ -1,6 +1,6 @@
 from flask import Flask
 
-from api.app.initialization import db
+from api.app.initialization import db, register_extension
 from api.app.initialization.middleware import register_middleware
 from api.app.config import Config
 from api.app.utils.driver import logger
@@ -10,6 +10,8 @@ def create_app():
     _app = Flask(__name__)
     logger.info("加载配置信息")
     _app.config.from_object(Config)
+
+    api = register_extension(_app)
 
     logger.info("加载路由")
     from api.app.resources.registry import register_resource
