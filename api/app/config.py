@@ -1,7 +1,7 @@
 import os
 
 PROJECT_ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))  # 项目绝对路径
-DEBUG_MODE = os.getenv("DEBUG_MODE", False)
+DEBUG_MODE = os.getenv("DEBUG_MODE", True)
 HOST = os.getenv("HOST", "0.0.0.0")
 PORT = os.getenv("PORT", 50001)
 
