@@ -2,4 +2,5 @@
 
 cd "$(dirname "$0")/.." || exit
 
-pipreqs --force .
+cd api || exit
+flask --app app.server.py db init

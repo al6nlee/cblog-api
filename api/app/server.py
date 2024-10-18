@@ -1,6 +1,6 @@
 from flask import Flask
 
-from api.app.initialization import db
+from api.app.initialization import db, register_extension
 from api.app.initialization.middleware import register_middleware
 from api.app.config import Config
 from api.app.utils.driver import logger
@@ -14,7 +14,7 @@ def create_app():
     logger.info("加载路由")
     from api.app.resources.registry import register_resource
     register_resource(_app)
-
+    register_extension(_app)
     # 创建需要的表
     db.init_app(_app)
     with _app.app_context():
