@@ -6,7 +6,22 @@ HOST = os.getenv("HOST", "0.0.0.0")
 PORT = os.getenv("PORT", 50001)
 
 
-class Config:
+class DB_CONFIG:
+    # 数据库配置
+    DB_TYPE = os.getenv('DB_TYPE', 'sqlite').lower()
+    if DB_TYPE == 'mysql':
+        DB_USERNAME = os.getenv('DB_USERNAME', 'root')
+        DB_PASSWORD = os.getenv('DB_PASSWORD', 'passwd')
+        DB_HOST = os.getenv('DB_HOST', 'localhost')
+        DB_PORT = os.getenv('DB_PORT', '3306')
+        DB_NAME = os.getenv('DB_NAME', 'testdb')
+        SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    elif DB_TYPE == 'sqlite':
+        DB_NAME = os.getenv('DB_NAME', f'{PROJECT_ROOT_PATH}/api/data/api.db')
+        SQLALCHEMY_DATABASE_URI = f"sqlite:///{DB_NAME}"
+    else:
+        raise ValueError(f"数据库类型不支持, TYPE: {DB_TYPE}")
+
+
+class Config(DB_CONFIG):
     DEBUG = DEBUG_MODE
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{PROJECT_ROOT_PATH}/api/data/api.db"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
