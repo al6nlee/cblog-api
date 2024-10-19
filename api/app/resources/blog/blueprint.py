@@ -1,10 +1,9 @@
-from flask import Blueprint, Flask
-from flask_restful import Api
+from api.app.initialization import smorest_api
+from api.app.resources.base_blueprint import Blueprint
 
-blog_bp = Blueprint("blog", __name__, url_prefix="/blog")
-blog_api = Api(blog_bp)
+blog_bp = Blueprint("blog", __name__, url_prefix="/blog", description="博客相关")
 
 
-def register_blog_bp(app_: Flask):
-    # blog_api.add_resource(BlogListResource, '/list')
-    app_.register_blueprint(blog_bp)
+def register_blog_bp():
+    # blog_bp.add_resource(BlogListResource, '/list')
+    smorest_api.register_blueprint(blog_bp)

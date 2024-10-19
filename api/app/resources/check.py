@@ -1,5 +1,6 @@
-from flask import Blueprint
-from flask_restful import Api, Resource
+from api.app.initialization import smorest_api
+from api.app.resources.base_blueprint import Blueprint
+from flask_restful import Resource
 
 
 class HealthCheck(Resource):
@@ -7,10 +8,9 @@ class HealthCheck(Resource):
         return {'status': 'healthy'}, 200
 
 
-check_bp = Blueprint('check', __name__, url_prefix='/check')
-check_api = Api(check_bp)  # 将 API 对象与蓝图关联
+check_bp = Blueprint('check', __name__, url_prefix='/check', description='健康检查')
 
 
-def register_health_bp(app_):
-    check_api.add_resource(HealthCheck, '/')
-    app_.register_blueprint(check_bp)
+def register_health_bp():
+    check_bp.add_resource(HealthCheck, '')
+    smorest_api.register_blueprint(check_bp)

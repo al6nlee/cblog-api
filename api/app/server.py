@@ -1,3 +1,5 @@
+import warnings
+
 from flask import Flask
 
 from api.app.initialization import db, register_extension
@@ -12,12 +14,17 @@ def create_app():
     logger.info("加载配置信息")
     _app.config.from_object(Config)
 
-    db.init_app(_app)
+    warnings.filterwarnings(
+        # 在一些场景下(比如UserSchema(partial=True) 和 UserSchema就被被解析出相同的名称User)，会出现Multiple schemas resolved to the name的警告，忽略掉
+        "ignore",
+        message="Multiple schemas resolved to the name",
+    )
+
+    register_extension(_app)
 
     logger.info("加载路由")
     from api.app.resources.registry import register_resource
-    register_resource(_app)
-    register_extension(_app)
+    register_resource()
 
     logger.info("加载中间件")
     register_middleware(_app)

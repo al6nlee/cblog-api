@@ -1,10 +1,14 @@
-from flask import Blueprint, Flask
-from flask_restful import Api
+from api.app.initialization import smorest_api
+from api.app.resources.base_blueprint import Blueprint
 
-auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
-auth_api = Api(auth_bp)  # 将 API 对象与蓝图关联
+auth_bp = Blueprint("auth", __name__, url_prefix="/auth", description='权限相关')
 
 
-def register_auth_bp(app_: Flask):
-    # auth_api.add_resource(UserResource, '/user')
-    app_.register_blueprint(auth_bp)
+def register_auth_bp():
+    from api.app.resources.auth.resource_user import UserResource
+    from api.app.resources.auth.resource_user import UserListResource
+
+    auth_bp.add_resource(UserResource, '/user/<int:user_id>')
+    auth_bp.add_resource(UserListResource, '/user')
+
+    smorest_api.register_blueprint(auth_bp)
