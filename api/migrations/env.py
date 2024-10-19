@@ -1,9 +1,10 @@
-import logging
 from logging.config import fileConfig
 
 from flask import current_app
 
 from alembic import context
+
+from api.migrations.init_project_data import initialize_project_data, ensure_database_exists
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -12,7 +13,7 @@ config = context.config
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
-logger = logging.getLogger('alembic.env')
+from api.app.utils.driver import logger
 
 
 def get_engine():
@@ -92,7 +93,10 @@ def run_migrations_online():
 
     connectable = get_engine()
 
-    with connectable.connect() as connection:
+    # 检查并创建数据库（如不存在）
+    ensure_database_exists(config)
+
+    with connectable.connect() as connection:   # 这一步如果未创建数据库就会抛异常
         context.configure(
             connection=connection,
             target_metadata=get_metadata(),
@@ -102,6 +106,10 @@ def run_migrations_online():
 
         with context.begin_transaction():
             context.run_migrations()
+
+            # 初始化项目数据
+            logger.info("Initialize project data...")
+            initialize_project_data(connection)
 
 
 if context.is_offline_mode():

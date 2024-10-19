@@ -26,17 +26,3 @@ def create_app():
 
 
 server_app = create_app()
-
-
-@server_app.cli.command("create-db")
-def create_db():
-    """
-    Create database if it doesn't exist.
-    """
-    logger.info(f"Check if the database {server_app.config['DB_NAME']} exists ...")
-    if database_exists(server_app.config["SQLALCHEMY_DATABASE_URI"]):
-        logger.info(f"Database {server_app.config['DB_NAME']} already exists, skipping creation.")
-    else:
-        logger.info(f"Database {server_app.config['DB_NAME']} does not exist, creating it ...")
-        create_database(server_app.config["SQLALCHEMY_DATABASE_URI"], encoding="utf8mb4")
-        logger.info("Database created successfully!")
