@@ -1,15 +1,19 @@
 from flask_smorest import abort
 from flask_restful import Resource
 from api.app.resources.auth.blueprint import auth_bp
+from api.app.schema.base_schema import BaseResponseItemSchema, BaseResponsePaginationSchema, PaginationSchema
 from api.app.service.auth.service_user import user_service
 from api.app.schema.auth.schema_user import UserSchema
+from api.app.utils.response import SuccessResponse
 
 
 class UserListResource(Resource):
-    @auth_bp.response(200, UserSchema(many=True))
-    def get(self):
-        """获取所有用户"""
-        return user_service.get_all_users()
+    @auth_bp.arguments(PaginationSchema, location="query")
+    @auth_bp.response(200, BaseResponsePaginationSchema)
+    def get(self, args):
+        """获取用户列表"""
+        total, items = user_service.get_users_list(args)
+        return SuccessResponse().set_items(items, total)
 
     @auth_bp.arguments(UserSchema)  # 装饰器处理数据效验和解析
     @auth_bp.response(201, UserSchema)
@@ -19,13 +23,11 @@ class UserListResource(Resource):
 
 
 class UserResource(Resource):
-    @auth_bp.response(200, UserSchema)
+    @auth_bp.response(200, BaseResponseItemSchema)
     def get(self, user_id):
         """根据用户ID获取用户"""
-        user = user_service.get_user(user_id)
-        if user is None:
-            abort(404, message="用户不存在")
-        return user
+        item = user_service.get_user(user_id)
+        return SuccessResponse().set_item(item)
 
     @auth_bp.arguments(UserSchema(partial=True))  # 允许部分更新
     @auth_bp.response(200, UserSchema)
