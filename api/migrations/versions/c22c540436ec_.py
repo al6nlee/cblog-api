@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: e3a901c29716
+Revision ID: c22c540436ec
 Revises: 
-Create Date: 2024-10-18 20:08:23.065457
+Create Date: 2024-10-20 13:07:04.988005
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e3a901c29716'
+revision = 'c22c540436ec'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -66,15 +66,16 @@ def upgrade():
     )
     op.create_table('tbl_user',
     sa.Column('username', sa.String(length=100), nullable=False, comment='用户名'),
-    sa.Column('email', sa.String(length=200), nullable=False, comment='用户邮箱'),
+    sa.Column('nickname', sa.String(length=50), nullable=True, comment='昵称'),
     sa.Column('password', sa.String(length=200), nullable=False, comment='用户密码'),
+    sa.Column('phone_number', sa.String(length=20), nullable=True, comment='手机号'),
+    sa.Column('email', sa.String(length=200), nullable=False, comment='用户邮箱'),
     sa.Column('role_id', sa.Integer(), nullable=False, comment='角色ID'),
     sa.Column('gender', sa.String(length=10), nullable=True, comment='性别'),
     sa.Column('location', sa.String(length=100), nullable=True, comment='位置/地址'),
     sa.Column('birthdate', sa.Date(), nullable=True, comment='出生日期'),
     sa.Column('avatar', sa.String(length=200), nullable=True, comment='头像URL'),
     sa.Column('signature', sa.String(length=200), nullable=True, comment='个性签名'),
-    sa.Column('phone_number', sa.String(length=20), nullable=True, comment='手机号'),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('create_date', sa.DateTime(), nullable=True),
     sa.Column('update_date', sa.DateTime(), nullable=True),
