@@ -31,11 +31,11 @@ def initialize_project_data(connection):
     tbl_user = Table('tbl_user', metadata, autoload_with=connection)
     if is_table_empty(connection, tbl_user):
         connection.execute(tbl_user.insert(), [
-            {"id": 1, "username": "admin", "email": "admin@example.com", "password": "admin123", "role_id": 1,
+            {"id": 1, "username": "admin", "nickname": "管理员","email": "admin@example.com", "password": "admin123", "role_id": 1,
              "gender": "male", "location": "中国-北京市-北京市", "birthdate": date(2000, 1, 1),
              "avatar": "avatar-8c6976e5b5.png", "signature": "这个人很懒，什么都没留下！", "phone_number": "1234567891",
              "create_date": current_time, "update_date": current_time},
-            {"id": 2, "username": "alan", "email": "alan@example.com", "password": "user123", "role_id": 2,
+            {"id": 2, "username": "alan", "nickname": "艾伦", "email": "alan@example.com", "password": "user123", "role_id": 2,
              "gender": "female", "location": "中国-上海市-上海市", "birthdate": date(2000, 1, 1),
              "avatar": "avatar-db42328112.png", "signature": "这个人很懒，什么都没留下！", "phone_number": "1234567892",
              "create_date": current_time, "update_date": current_time},
