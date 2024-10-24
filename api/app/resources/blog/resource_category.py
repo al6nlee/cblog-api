@@ -1,11 +1,11 @@
 from flask_restful import Resource
-from api.app.resources.auth.blueprint import auth_bp
-from api.app.schema.base_schema import BaseResponseItemsSchema
+from api.app.resources.blog.blueprint import blog_bp
+from api.app.schema.base_schema import BaseResponseItemsSchema, BaseResponseItemSchema
 from api.app.utils.response import SuccessResponse
 
 
 class BlogCategoryListResource(Resource):
-    @auth_bp.response(200, BaseResponseItemsSchema)
+    @blog_bp.response(200, BaseResponseItemsSchema)
     def get(self):
         """获取所有分类"""
         category_list = [
